@@ -1,0 +1,1183 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Hot Shotz</title>
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #17161b;
+    --muted: #726d61;
+    --line: #e4e0d6;
+    --navy: #17284f;
+    --red: #b3222c;
+    --surface: #f3f1ea;
+    --yellow: #f5c242;
+    --yellow-deep: #d9a51e;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { padding-inline: max(20px, calc((100% - 760px) / 2)); }
+  .wrap-wide { padding-inline: max(20px, calc((100% - 900px) / 2)); }
+
+  h1, h2, h3 {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    text-wrap: balance;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .mono { font-family: 'IBM Plex Mono', 'Courier New', monospace; font-variant-numeric: tabular-nums; }
+
+  a { color: inherit; }
+  p { line-height: 1.65; max-width: 62ch; color: var(--muted); }
+  img { max-width: 100%; display: block; }
+
+  .placeholder-bar {
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 0.82rem;
+    text-align: center;
+    padding: 10px 16px;
+  }
+  .placeholder-bar strong { color: #e7b84e; }
+
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--yellow);
+    border-bottom: 2px solid var(--ink);
+  }
+  header.site .wrap-wide {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 14px;
+    flex-wrap: wrap;
+  }
+  header.site .wordmark {
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  nav.site ul {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+  nav.site a {
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+    border-bottom: 2px solid transparent;
+    padding-bottom: 3px;
+  }
+  nav.site a:hover { border-color: var(--red); }
+
+  .btn {
+    display: inline-block;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 0.92rem;
+    border: 1.5px solid var(--ink);
+  }
+  .btn.primary { background: var(--red); color: #fff; border-color: var(--red); }
+  .btn.ghost { background: transparent; color: var(--ink); }
+  .btn.on-yellow.ghost { border-color: var(--ink); }
+  .btn.blue { background: #0066ff; color: #fff; border-color: #0057db; }
+  button.btn { font-family: inherit; cursor: pointer; appearance: none; -webkit-appearance: none; }
+
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* MENU MODAL */
+  .menu-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(23, 22, 27, 0.85);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 100;
+    padding: 40px 20px;
+    overflow: auto;
+  }
+  .menu-modal-overlay.active { display: flex; }
+  .menu-modal-inner {
+    position: relative;
+    max-width: 640px;
+    width: 100%;
+    max-height: calc(100vh - 80px);
+    overflow: auto;
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 36px 32px 44px;
+  }
+  .menu-modal-close {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    border: 2px solid #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    z-index: 2;
+  }
+  @media (max-width: 600px) {
+    .menu-modal-overlay { padding: 20px 12px; }
+    .menu-modal-inner { padding: 28px 18px 34px; }
+  }
+
+  /* HERO */
+  .hero-band {
+    background: var(--yellow);
+    border-bottom: 2px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 26px;
+  }
+  .skyline-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .skyline-wrap img { width: 100%; height: auto; opacity: 0.4; }
+  .hero {
+    padding-block: 48px 0;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: end;
+    gap: 10px;
+  }
+  .hero-copy { padding-bottom: 34px; text-align: left; }
+  .hero img.wordmark-img { width: min(420px, 100%); }
+  .hero p.lede {
+    margin: 20px 0 0;
+    max-width: 42ch;
+    font-size: 1.05rem;
+    color: var(--ink);
+    opacity: 0.78;
+  }
+  .hero .cta-row { display: flex; gap: 14px; margin-top: 26px; flex-wrap: wrap; }
+  .hero .mascot-col { display: flex; flex-direction: column; align-items: center; }
+  .hero .mascot-col img { width: min(300px, 78%); }
+  .loki-caption {
+    margin: 10px 0 0;
+    max-width: min(300px, 78%);
+    font-size: 0.82rem;
+    font-style: italic;
+    text-align: center;
+    color: var(--ink);
+    opacity: 0.7;
+  }
+  @media (max-width: 720px) {
+    .hero { grid-template-columns: 1fr; text-align: center; }
+    .hero-copy { text-align: center; padding-bottom: 8px; }
+    .hero img.wordmark-img { margin-inline: auto; }
+    .hero p.lede { margin-inline: auto; }
+    .hero .cta-row { justify-content: center; }
+    .hero .mascot-col img { width: min(220px, 60%); }
+  }
+
+  section { padding-block: 64px; border-top: 1px solid var(--line); }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+
+  /* PAYMENT */
+  .payment-line {
+    margin-top: 46px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 22px 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    background: var(--surface);
+  }
+  .payment-line .methods-col { display: flex; flex-direction: column; gap: 10px; }
+  .payment-line .methods-label { font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .card-icons { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .card-icons .chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid var(--line);
+    background: #fff;
+  }
+  .card-icons .chip.cash {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.03em;
+  }
+  .payment-line .fee { font-size: 0.8rem; color: var(--muted); max-width: 30ch; }
+
+  .grab-line {
+    text-align: center;
+    margin-top: 44px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* MEET LOKI */
+  .loki-grid {
+    display: grid;
+    grid-template-columns: 0.65fr 1fr;
+    gap: 44px;
+    align-items: start;
+  }
+  .loki-img img { width: 100%; border-radius: 10px; }
+
+  #loki { background: #ffffff; }
+
+  @media (max-width: 720px) {
+    .loki-grid { grid-template-columns: 1fr; }
+    .loki-img { max-width: 280px; margin-inline: auto; }
+  }
+
+  /* FIND THE STAND */
+  .find-note {
+    margin-top: 22px;
+    font-size: 0.9rem;
+    color: var(--muted);
+    border-left: 2px solid var(--navy);
+    padding-left: 16px;
+  }
+  .track-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .btn.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .coming-soon-stamp {
+    position: absolute;
+    top: -16px;
+    right: -34px;
+    background: var(--red);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1.5px solid var(--ink);
+    transform: rotate(-9deg);
+    white-space: nowrap;
+  }
+
+  /* GALLERY */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 26px;
+  }
+  .shot {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+  }
+  .shot span.cap {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .shot.has-photo {
+    aspect-ratio: auto;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    overflow: hidden;
+  }
+  .shot.has-photo img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+  .shot.has-photo .cap-banner {
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+    padding: 10px 8px;
+  }
+
+  button.shot.folder {
+    all: unset;
+    box-sizing: border-box;
+    aspect-ratio: 1;
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  button.shot.folder:hover,
+  button.shot.folder:focus-visible {
+    border-color: var(--navy);
+    background: var(--bg);
+  }
+  button.shot.folder .folder-icon { font-size: 2.2rem; line-height: 1; opacity: 0.6; }
+
+  /* GALLERY MODALS */
+  .gallery-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(23, 22, 27, 0.85);
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 100;
+    padding: 40px 20px;
+    overflow: auto;
+  }
+  .gallery-modal-overlay.active { display: flex; }
+  .gallery-modal-inner {
+    position: relative;
+    max-width: 720px;
+    width: 100%;
+    max-height: calc(100vh - 80px);
+    overflow: auto;
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 36px 32px 44px;
+  }
+  .gallery-modal-close {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    border: 2px solid #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    z-index: 2;
+  }
+  .gallery-modal-inner h3 {
+    font-size: 1.3rem;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 20px;
+  }
+  .gallery-modal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+  }
+  .gallery-modal-grid figure {
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .gallery-modal-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .gallery-modal-grid figcaption {
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+    padding: 8px 6px;
+  }
+  .gallery-modal-empty { color: var(--muted); font-size: 0.95rem; }
+
+  @media (max-width: 600px) {
+    .gallery-modal-overlay { padding: 20px 12px; }
+    .gallery-modal-inner { padding: 28px 18px 34px; }
+  }
+
+  /* FOOTER */
+  footer.site { border-top: 3px solid var(--yellow); }
+  footer.site .wrap-wide {
+    padding-block: 48px 36px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+  }
+  footer.site h2 { font-size: 1.3rem; margin-bottom: 10px; }
+  .social-row { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+  .contact-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .contact-list li { font-weight: 700; }
+  .contact-list span.label { display: block; font-weight: 400; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .foot-note { font-size: 0.8rem; color: var(--muted); margin-top: 30px; }
+
+  @media (max-width: 760px) {
+    footer.site .wrap-wide { grid-template-columns: 1fr; }
+    .menu-item .name-wrap { max-width: 100%; }
+  }
+
+  /* FULL MENU */
+  .menu-intro { margin-top: 8px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .menu-intro p { margin: 0; }
+  .vienna-badge { display: flex; align-items: center; gap: 8px; padding: 6px 12px 6px 8px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); flex-shrink: 0; }
+  .vienna-badge img { width: 22px; height: 22px; object-fit: contain; }
+  .vienna-badge span { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+
+  .combo-banner {
+    margin-top: 26px;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 8px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .combo-banner strong { font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; }
+  .combo-banner span.price { font-weight: 800; color: var(--yellow); font-size: 1.15rem; }
+
+  .menu-category { margin-top: 46px; }
+  .menu-category:first-of-type { margin-top: 40px; }
+  .menu-category h3 {
+    font-size: 1.3rem;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .menu-list { margin-top: 20px; display: flex; flex-direction: column; gap: 20px; }
+  .menu-item .item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; }
+  .menu-item h4 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.02em; }
+  .menu-item .price { font-weight: 700; white-space: nowrap; color: var(--red); }
+  .menu-item p { margin: 4px 0 0; font-size: 0.92rem; max-width: 54ch; }
+  .menu-item p.flavor-list { color: var(--ink); opacity: 0.7; font-style: italic; }
+
+  .menu-item.has-photo { display: flex; gap: 14px; align-items: flex-start; }
+  .menu-item.has-photo .item-photo {
+    width: 84px;
+    height: 84px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+  }
+  .menu-item.has-photo .item-text { flex: 1; min-width: 0; }
+
+  .menu-note { margin-top: 14px; font-size: 0.85rem; color: var(--muted); }
+
+  @media (max-width: 600px) {
+    .menu-item .item-head { flex-wrap: wrap; }
+    .menu-item.has-photo .item-photo { width: 64px; height: 64px; }
+  }
+  /* WEEKLY SCHEDULE */
+  .today-strip {
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px 16px;
+    flex-wrap: wrap;
+    background: var(--yellow);
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    padding: 14px 18px;
+  }
+  .today-strip .tag {
+    background: var(--ink);
+    color: var(--yellow);
+    font-weight: 800;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 5px 10px;
+    border-radius: 3px;
+  }
+  .today-strip .where { font-weight: 700; font-size: 1rem; color: var(--ink); min-width: 0; }
+  .today-strip .when { font-family: 'IBM Plex Mono', 'Courier New', monospace; font-size: 0.88rem; color: var(--ink); opacity: 0.8; }
+
+  .sched-head {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px 16px;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .sched-head h3 { font-size: 1.3rem; }
+  .sched-head .range { font-size: 0.85rem; color: var(--muted); }
+
+  .sched-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 760px) { .sched-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 480px) { .sched-grid { grid-template-columns: 1fr; } }
+
+  .day-card {
+    position: relative;
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .day-card .day-top {
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-radius: 4px 4px 0 0;
+  }
+  .day-card .day-name { font-weight: 800; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .day-card .day-date { font-size: 0.8rem; opacity: 0.8; }
+  .day-card .day-body { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .day-card .loc { font-weight: 700; font-size: 0.98rem; color: var(--ink); overflow-wrap: anywhere; }
+  .day-card .addr { font-size: 0.85rem; color: var(--muted); overflow-wrap: anywhere; }
+  .day-card .addr a { color: var(--navy); font-weight: 600; }
+  .day-card .hours {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line);
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--red);
+  }
+  .day-card .note { font-size: 0.8rem; color: var(--ink); opacity: 0.7; font-style: italic; }
+
+  .day-card.is-today { box-shadow: 4px 4px 0 var(--ink); }
+  .day-card.is-today .day-top { background: var(--yellow); color: var(--ink); border-bottom: 1.5px solid var(--ink); }
+  .day-card.is-today .day-date { opacity: 0.75; }
+  .day-card .today-stamp {
+    position: absolute;
+    top: -12px;
+    right: -8px;
+    background: var(--red);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1.5px solid var(--ink);
+    transform: rotate(6deg);
+  }
+
+  .closed-bar {
+    margin-top: 14px;
+    border: 1.5px dashed var(--ink);
+    border-radius: 6px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 16px;
+    flex-wrap: wrap;
+    background: var(--surface);
+  }
+  .closed-bar.is-today { border-style: solid; background: var(--yellow); box-shadow: 4px 4px 0 var(--ink); }
+  .closed-bar .day-name { font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink); }
+  .closed-bar .day-date { font-weight: 400; font-size: 0.8rem; color: var(--muted); margin-left: 8px; letter-spacing: 0; text-transform: none; }
+  .closed-bar .closed-word {
+    font-weight: 800;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.9rem;
+  }
+  .closed-bar .closed-note { font-size: 0.85rem; color: var(--muted); font-style: italic; flex-basis: 100%; }
+
+  .sched-foot { margin-top: 18px; font-size: 0.85rem; }
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+
+
+<header class="site">
+  <div class="wrap-wide">
+    <span class="wordmark">Hot Shotz</span>
+    <nav class="site">
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#loki">Our Story</a></li>
+        <li><a href="#find-us">Find the Stand</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="hero-band">
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <img class="wordmark-img" src="images/ede903503da6.png" alt="Hot Shotz - Chicago Style Hotdogs">
+      <p class="lede">Vienna Beef hot dogs, loaded nachos, and a menu that doesn't cut corners. Grab a dog, grab a seat.</p>
+      <div class="cta-row">
+        <button type="button" class="btn primary" onclick="openMenuModal()">See the Menu</button>
+        <a class="btn blue" href="https://glympse.com/!hotshotz" target="_blank" rel="noopener noreferrer">Find the Stand</a>
+      </div>
+    </div>
+    <div class="mascot-col">
+      <img src="images/dbbce7ce9e35.png" alt="Loki, the Hot Shotz mascot, in an aviator jacket holding a Chicago-style hot dog">
+      <p class="loki-caption">Loki flies wingman on every run — bomber jacket zipped, aviators on, first in line for quality control on the Chicago Style. If there's a hot dog on deck, Loki's already got a bite planned.</p>
+    </div>
+  </section>
+  <div class="skyline-wrap">
+    <img src="images/480cca46a3a4.png" alt="">
+  </div>
+</div>
+
+<section id="loki" class="wrap">
+  <div class="loki-grid">
+    <div class="loki-img">
+      <img src="images/ca1cf4fa8f92.jpg" alt="Ryan Pilota, founder of Hot Shotz Chicago Style Hotdogs">
+    </div>
+    <div>
+      <p class="eyebrow">Meet the Founder</p>
+      <h2>South side kid, Arizona hot dog stand.</h2>
+      <p>The owner and founder of Hot Shotz Chicago Style Hotdogs is Ryan Pilota. I grew up on the south side of Chicago, and for many years the Chicago style hot dog was a staple at any barbecue or sporting event. Once I moved out here to Arizona, it was difficult to find a really good Chicago style hot dog — hence the reason we started this small food truck business.</p>
+      <p style="margin-top:14px;">The Loki story is kind of funny: we were having a barbecue at our home, and Loki was just a puppy at the time. He literally devoured both of my Chicago style hot dogs right off my plate. At that point, a lightbulb went off — I pictured him basically swooping in and eating a hot dog, and that's what started this whole thing.</p>
+      <p style="margin-top:14px;">I look forward to meeting you, and I'd love to swap stories if you're from Chicago too.</p>
+    </div>
+  </div>
+</section>
+
+<section id="menu" class="wrap">
+  <p class="eyebrow">The Menu</p>
+  <h2>Everything on the menu.</h2>
+  <div class="menu-intro">
+    <p>Every dog flies naked or in a boat — hold the bun, no problem!</p>
+    <span class="vienna-badge"><img src="images/a41392149470.webp" alt="Vienna Beef"><span>Proudly made with Vienna Beef</span></span>
+  </div>
+
+  <div class="cta-row" style="margin-top:24px;">
+    <button type="button" class="btn primary" onclick="openMenuModal()">See the Menu</button>
+  </div>
+
+  <div class="payment-line" style="margin-top:32px;">
+    <div class="methods-col">
+      <span class="methods-label">We Accept</span>
+      <div class="card-icons">
+        <span class="chip cash">CASH</span>
+        <span class="chip" aria-label="Visa">
+          <svg width="34" height="14" viewBox="0 0 68 28"><text x="0" y="21" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="700" font-size="24" fill="#1A1F71">VISA</text></svg>
+        </span>
+        <span class="chip" aria-label="Mastercard">
+          <svg width="30" height="18" viewBox="0 0 40 24">
+            <circle cx="15" cy="12" r="11" fill="#EB001B"/>
+            <circle cx="25" cy="12" r="11" fill="#F79E1B"/>
+            <path d="M20 3.5a11 11 0 0 1 0 17 11 11 0 0 1 0-17z" fill="#FF5F00"/>
+          </svg>
+        </span>
+        <span class="chip" aria-label="Discover">
+          <svg width="64" height="16" viewBox="0 0 120 30">
+            <text x="0" y="22" font-family="'Archivo', Arial, sans-serif" font-weight="700" font-size="21" letter-spacing="0.5" fill="#1c1c1c">DISCOVER</text>
+            <circle cx="112" cy="22" r="7" fill="#FF6000"/>
+          </svg>
+        </span>
+        <span class="chip" style="background:#006FCF; border-color:#006FCF;" aria-label="American Express">
+          <svg width="36" height="16" viewBox="0 0 72 30"><text x="0" y="22" font-family="'Archivo', Arial, sans-serif" font-weight="800" font-size="20" letter-spacing="0.5" fill="#ffffff">AMEX</text></svg>
+        </span>
+        <span class="chip" style="background:#000; border-color:#000;" aria-label="Apple Pay">
+          <svg width="52" height="16" viewBox="0 0 100 30"><text x="0" y="22" font-family="-apple-system, 'Archivo', Arial, sans-serif" font-weight="600" font-size="18" fill="#ffffff">Apple Pay</text></svg>
+        </span>
+        <span class="chip" aria-label="Google Pay">
+          <svg width="52" height="16" viewBox="0 0 100 30">
+            <text x="0" y="22" font-family="'Archivo', Arial, sans-serif" font-weight="700" font-size="19"><tspan fill="#4285F4">G</tspan><tspan fill="#EA4335">o</tspan><tspan fill="#FBBC05">o</tspan><tspan fill="#4285F4">g</tspan><tspan fill="#34A853">l</tspan><tspan fill="#EA4335">e</tspan></text>
+            <text x="66" y="22" font-family="'Archivo', Arial, sans-serif" font-weight="500" font-size="19" fill="#5f6368">Pay</text>
+          </svg>
+        </span>
+      </div>
+    </div>
+    <span class="fee">A 3.5% convenience fee applies to credit card payments.</span>
+  </div>
+
+  <p class="grab-line">Grab a dog, grab a seat — see you at the stand.</p>
+</section>
+
+<div class="menu-modal-overlay" id="menu-modal">
+  <div class="menu-modal-inner">
+    <button type="button" class="menu-modal-close" onclick="closeMenuModal()" aria-label="Close menu">&times;</button>
+
+    <div class="combo-banner"><strong>Make it a combo</strong> — add chips &amp; a drink for <span class="price">$2</span></div>
+
+    <div class="menu-category">
+      <h3>Hot Dogs</h3>
+      <div class="menu-list">
+        <div class="menu-item has-photo">
+          <img class="item-photo" src="images/1784f19cdbf9.jpg" alt="Chicago Style hot dog">
+          <div class="item-text">
+            <div class="item-head"><h4>Chicago Style</h4><span class="price">$7.00</span></div>
+            <p>Vienna Beef hot dog on a poppy seed bun with sweet relish, mustard, sport peppers, tomatoes, diced onions, pickle &amp; celery salt.</p>
+          </div>
+        </div>
+        <div class="menu-item has-photo">
+          <img class="item-photo" src="images/c52023306cb4.jpg" alt="New York Style hot dog">
+          <div class="item-text">
+            <div class="item-head"><h4>New York Style</h4><span class="price">$7.00</span></div>
+            <p>Vienna Beef hot dog on a regular bun with sauerkraut, spicy brown mustard &amp; red onion sauce.</p>
+          </div>
+        </div>
+        <div class="menu-item has-photo">
+          <img class="item-photo" src="images/9fbb83a8baa5.jpg" alt="The Quarry Dog">
+          <div class="item-text">
+            <div class="item-head"><h4>The Quarry Dog</h4><span class="price">$6.00</span></div>
+            <p>Thick-cut tomato, thick-cut cucumber, diced onions &amp; mustard — cool, crisp, and a little different.</p>
+          </div>
+        </div>
+        <div class="menu-item has-photo">
+          <img class="item-photo" src="images/36e52fb11ad7.jpg" alt="Chili-Cheese Dog">
+          <div class="item-text">
+            <div class="item-head"><h4>Chili-Cheese Dog</h4><span class="price">$6.00</span></div>
+            <p>Vienna Beef hot dog on a regular bun with chili, diced onion &amp; shredded cheese.</p>
+          </div>
+        </div>
+        <div class="menu-item has-photo">
+          <img class="item-photo" src="images/60279cd4e236.jpg" alt="The Nacho Dog">
+          <div class="item-text">
+            <div class="item-head"><h4>The Nacho Dog</h4><span class="price">$7.00</span></div>
+            <p>Vienna Beef hot dog on a regular bun loaded with Fritos, nacho cheese &amp; jalape&ntilde;os.</p>
+          </div>
+        </div>
+        <div class="menu-item has-photo">
+          <img class="item-photo" src="images/16ec8293c5e4.jpg" alt="The Plain Jane hot dog">
+          <div class="item-text">
+            <div class="item-head"><h4>The Plain Jane</h4><span class="price">$5.00</span></div>
+            <p>Vienna Beef hot dog on a regular bun, just ketchup &amp; mustard. Simple and classic.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <h3>Sides With a Kick</h3>
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="item-head"><h4>Walking Taco</h4><span class="price">$6.00</span></div>
+          <p>A bag of Fritos topped with chili, nacho cheese &amp; sour cream.</p>
+        </div>
+        <div class="menu-item">
+          <div class="item-head"><h4>El Diablo Cheetos</h4><span class="price">$6.00</span></div>
+          <p>Flamin&rsquo; Hot Cheetos loaded with jalape&ntilde;os &amp; nacho cheese.</p>
+        </div>
+        <div class="menu-item">
+          <div class="item-head"><h4>Nachos</h4><span class="price">$5.00</span></div>
+          <p>Tortilla chips, nacho cheese &amp; jalape&ntilde;os.</p>
+        </div>
+        <div class="menu-item">
+          <div class="item-head"><h4>Loaded Nachos</h4><span class="price">$7.00</span></div>
+          <p>Tortilla chips with nacho cheese, jalape&ntilde;os, chili, diced onions, sour cream, diced tomatoes &amp; shredded cheese.</p>
+        </div>
+        <div class="menu-item">
+          <div class="item-head"><h4>Chips</h4><span class="price">$1.50</span></div>
+          <p class="flavor-list">Lay&rsquo;s Potato Chips, Doritos Nacho, Fritos, Flamin&rsquo; Hot Cheetos, Cheetos, Funyuns</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <h3>Drinks</h3>
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="item-head"><h4>Assorted Drinks</h4><span class="price">$2.00</span></div>
+          <p>Coke, Diet Coke, Dr Pepper, Orange Crush &amp; Sprite.</p>
+        </div>
+        <div class="menu-item">
+          <div class="item-head"><h4>Bottled Water</h4><span class="price">$2.00</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-head"><h4>Gatorade</h4><span class="price">$3.00</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-head"><h4>Energy Drinks</h4><span class="price">$5.00</span></div>
+          <p>Red Bull — Peach, Regular &amp; Sugar-Free.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-category">
+      <h3>Sweet Stuff</h3>
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="item-head"><h4>Peanuts</h4><span class="price">$2.50</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-head"><h4>David&rsquo;s Sunflower Seeds</h4><span class="price">$2.00</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-head"><h4>Assorted Candy</h4><span class="price">$3.00</span></div>
+          <p class="flavor-list">Milky Way, 3 Musketeers, Hershey Bar, Hershey Almond Bar, Snickers, M&amp;M&rsquo;s Plain &amp; Peanut, Reese&rsquo;s Peanut Butter Cups, Twix, Kit Kat &amp; Sour Patch Kids</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="find-us" class="wrap">
+  <p class="eyebrow">Find the Stand</p>
+  <h2>Our week, Monday through Saturday.</h2>
+  <p style="margin-top:8px;">Here's where we're parked each day. Plans can change with weather or events, so tap Track the Stand Live to see exactly where we are right now.</p>
+
+  <div class="today-strip" id="today-strip" aria-live="polite">
+    <span class="tag">Today</span>
+    <span class="where" id="today-where">Checking today's spot…</span>
+    <span class="when" id="today-when"></span>
+  </div>
+
+  <div class="cta-row" style="margin-top:20px;">
+    <a class="btn primary" href="https://glympse.com/!hotshotz" target="_blank" rel="noopener noreferrer">Track the Stand Live</a>
+  </div>
+
+  <div class="sched-head">
+    <h3>This Week's Flight Plan</h3>
+    <span class="range mono" id="sched-range"></span>
+  </div>
+  <div class="sched-grid" id="sched-grid"></div>
+  <div class="closed-bar" id="closed-bar">
+    <span class="day-name">Sunday<span class="day-date mono" id="sun-date"></span></span>
+    <span class="closed-word">Closed</span>
+    <span class="closed-note">Grounded for the day. Loki's on R&amp;R. We're back in the air Monday.</span>
+  </div>
+  <p class="sched-foot">Booking a private event on a weekday? Call or email below and we'll fit you into the flight plan.</p>
+</section>
+
+<section id="gallery" class="wrap">
+  <p class="eyebrow">Gallery</p>
+  <div class="gallery-grid">
+    <button type="button" class="shot folder" onclick="openGalleryModal('stand')">
+      <span class="folder-icon">&#128193;</span>
+      <span class="cap">The Stand</span>
+    </button>
+    <button type="button" class="shot folder" onclick="openGalleryModal('crew')">
+      <span class="folder-icon">&#128193;</span>
+      <span class="cap">The Crew</span>
+    </button>
+    <button type="button" class="shot folder" onclick="openGalleryModal('weekend')">
+      <span class="folder-icon">&#128193;</span>
+      <span class="cap">Weekend Rush</span>
+    </button>
+  </div>
+</section>
+
+<div class="gallery-modal-overlay" id="gallery-modal-stand">
+  <div class="gallery-modal-inner">
+    <button type="button" class="gallery-modal-close" onclick="closeGalleryModal('stand')" aria-label="Close">&times;</button>
+    <h3>The Stand</h3>
+    <div class="gallery-modal-grid">
+      <figure>
+        <img src="images/2570d93d0966.jpg" alt="Hot Shotz trailer with the service window open" loading="lazy">
+        <figcaption>Open for Business</figcaption>
+      </figure>
+      <figure>
+        <img src="images/985bfe1643b4.jpg" alt="Side of the trailer with the Hot Shotz logo and Chicago skyline" loading="lazy">
+        <figcaption>Chicago Skyline Wrap</figcaption>
+      </figure>
+      <figure>
+        <img src="images/115e0884d14a.jpg" alt="Trailer set up with flags and the menu sign out front" loading="lazy">
+        <figcaption>Set Up & Serving</figcaption>
+      </figure>
+      <figure>
+        <img src="images/b92a41ae58de.jpg" alt="Hot Shotz menu board mounted on the trailer" loading="lazy">
+        <figcaption>The Menu Board</figcaption>
+      </figure>
+      <figure>
+        <img src="images/be3ebe7b7f75.jpg" alt="Loki the mascot decal holding a Chicago dog" loading="lazy">
+        <figcaption>Loki on Duty</figcaption>
+      </figure>
+      <figure>
+        <img src="images/7be66e7e4988.jpg" alt="Rear doors of the trailer with Loki in the window" loading="lazy">
+        <figcaption>Back Doors</figcaption>
+      </figure>
+      <figure>
+        <img src="images/1640f2d188a5.jpg" alt="Trailer lit up at night beside the menu board" loading="lazy">
+        <figcaption>Lit Up at Night</figcaption>
+      </figure>
+      <figure>
+        <img src="images/65c65674ab66.jpg" alt="Hot Shotz logo lit up at night" loading="lazy">
+        <figcaption>After Dark</figcaption>
+      </figure>
+      <figure>
+        <img src="images/6ff8f3888273.jpg" alt="Chicago Style hot dog">
+        <figcaption>Chicago Style</figcaption>
+      </figure>
+      <figure>
+        <img src="images/d053debd70d7.jpg" alt="New York Style hot dog">
+        <figcaption>New York Style</figcaption>
+      </figure>
+      <figure>
+        <img src="images/e60791e0c23d.jpg" alt="The Quarry Dog">
+        <figcaption>The Quarry Dog</figcaption>
+      </figure>
+      <figure>
+        <img src="images/eaab1ef0124b.jpg" alt="Chili-Cheese Dog">
+        <figcaption>Chili-Cheese Dog</figcaption>
+      </figure>
+      <figure>
+        <img src="images/86a4bb537d99.jpg" alt="The Nacho Dog">
+        <figcaption>The Nacho Dog</figcaption>
+      </figure>
+      <figure>
+        <img src="images/329702f2709b.jpg" alt="The Plain Jane hot dog">
+        <figcaption>The Plain Jane</figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+
+<div class="gallery-modal-overlay" id="gallery-modal-crew">
+  <div class="gallery-modal-inner">
+    <button type="button" class="gallery-modal-close" onclick="closeGalleryModal('crew')" aria-label="Close">&times;</button>
+    <h3>The Crew</h3>
+    <div class="gallery-modal-grid">
+      <figure>
+        <img src="images/5fa3268621ae.jpg" alt="Crew member smiling from the service window" loading="lazy">
+        <figcaption>Service with a Smile</figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+
+<div class="gallery-modal-overlay" id="gallery-modal-weekend">
+  <div class="gallery-modal-inner">
+    <button type="button" class="gallery-modal-close" onclick="closeGalleryModal('weekend')" aria-label="Close">&times;</button>
+    <h3>Weekend Rush</h3>
+    <div class="gallery-modal-grid">
+      <figure>
+        <img src="images/e53763945dce.jpg" alt="A customer with a hot dog at the stand" loading="lazy">
+        <figcaption>Dog in Hand</figcaption>
+      </figure>
+      <figure>
+        <img src="images/10690fe98842.jpg" alt="Two smiling guests at the stand" loading="lazy">
+        <figcaption>Good Company</figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+
+<footer class="site" id="contact">
+  <div class="wrap-wide">
+    <div>
+      <h2>Get in touch.</h2>
+      <p>Booking a party, a company lunch, or just want to know where we'll be next weekend — reach out.</p>
+      <div class="social-row">
+        <a class="btn ghost" href="https://instagram.com/hotshotzcshd">Instagram — @hotshotzcshd</a>
+        <a class="btn ghost" href="https://x.com/hotshotzLoki">X — @hotshotzLoki</a>
+      </div>
+      <p class="foot-note">© 2026 Hot Shotz. Owned &amp; operated by Ryan Pilota.</p>
+    </div>
+    <ul class="contact-list">
+      <li><span class="label">Phone</span><a href="tel:7797075067">779-707-5067</a></li>
+      <li><span class="label">Email</span><a href="mailto:hotshotzcshd@gmail.com">hotshotzcshd@gmail.com</a></li>
+      <li><span class="label">Catering &amp; private events</span>Ask about full-service booking</li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  function openMenuModal() {
+    document.getElementById('menu-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenuModal() {
+    document.getElementById('menu-modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('menu-modal').addEventListener('click', function (e) {
+    if (e.target === this) closeMenuModal();
+  });
+
+  function openGalleryModal(name) {
+    var el = document.getElementById('gallery-modal-' + name);
+    if (el) {
+      el.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+  function closeGalleryModal(name) {
+    var el = document.getElementById('gallery-modal-' + name);
+    if (el) {
+      el.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+  ['stand', 'crew', 'weekend'].forEach(function (name) {
+    var el = document.getElementById('gallery-modal-' + name);
+    if (el) {
+      el.addEventListener('click', function (e) {
+        if (e.target === this) closeGalleryModal(name);
+      });
+    }
+  });
+
+  function closeAllModals() {
+    closeMenuModal();
+    ['stand', 'crew', 'weekend'].forEach(closeGalleryModal);
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAllModals();
+  });
+
+  /* ===== WEEKLY SCHEDULE — edit the spots here ===== */
+  var WEEK_OF = '2026-11-02'; // Monday of the week this schedule covers (YYYY-MM-DD)
+  var SCHEDULE = [
+    { day: 'Monday',    spot: 'Closed', address: '', hours: '', note: '', closed: true },
+    { day: 'Tuesday',   spot: 'Closed', address: '', hours: '', note: '', closed: true },
+    { day: 'Wednesday', spot: 'Closed', address: '', hours: '', note: '', closed: true },
+    { day: 'Thursday',  spot: 'GRAND OPENING! Lancer Pool – Desert Oasis (NoJo)', address: '17525 W Redbird Rd, AZ', hours: '6:00 PM – 8:00 PM', note: 'Come celebrate our first day!' },
+    { day: 'Friday',    spot: 'Corner of Patton Rd & Grand Ave', address: 'Patton Rd & Grand Ave, AZ', hours: '11:00 AM – 5:00 PM', note: '' },
+    { day: 'Saturday',  spot: 'Closed', address: '', hours: '', note: '', closed: true }
+  ];
+
+  (function renderSchedule() {
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var wk = WEEK_OF.split('-');
+    var monday = new Date(+wk[0], +wk[1] - 1, +wk[2]);
+    var diff = Math.round((today - monday) / 86400000);
+    var todayIdx = (diff >= 0 && diff <= 6) ? diff : -1; // 0 = Monday ... 6 = Sunday; -1 = not this schedule's week
+    function dateFor(i) { return new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i); }
+    function fmt(d) { return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+
+    document.getElementById('sched-range').textContent = fmt(dateFor(0)) + ' – ' + fmt(dateFor(6));
+    document.getElementById('sun-date').textContent = fmt(dateFor(6));
+
+    var grid = document.getElementById('sched-grid');
+    grid.innerHTML = SCHEDULE.map(function (s, i) {
+      var isToday = i === todayIdx;
+      var addr = s.address
+        ? '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(s.address) + '" target="_blank" rel="noopener noreferrer">' + esc(s.address) + '</a>'
+        : (s.closed ? '' : 'Address coming soon');
+      return '<article class="day-card' + (isToday ? ' is-today' : '') + '">' +
+        (isToday ? '<span class="today-stamp">Today</span>' : '') +
+        '<div class="day-top"><span class="day-name">' + esc(s.day.slice(0, 3)) + '</span><span class="day-date mono">' + fmt(dateFor(i)) + '</span></div>' +
+        '<div class="day-body">' +
+          '<span class="loc">' + esc(s.spot) + '</span>' +
+          '<span class="addr">' + addr + '</span>' +
+          (s.note ? '<span class="note">' + esc(s.note) + '</span>' : '') +
+          '<span class="hours">' + esc(s.hours) + '</span>' +
+        '</div></article>';
+    }).join('');
+
+    var where = document.getElementById('today-where');
+    var when = document.getElementById('today-when');
+    function nextOpen(from) {
+      for (var j = Math.max(from, 0); j < SCHEDULE.length; j++) {
+        if (!SCHEDULE[j].closed) return j;
+      }
+      return -1;
+    }
+    function showNext(prefix, from) {
+      var n = nextOpen(from);
+      if (n === -1) {
+        where.textContent = prefix + 'Check back soon for our next stop.';
+        when.textContent = '';
+      } else {
+        var s = SCHEDULE[n];
+        where.textContent = prefix + 'Next stop ' + s.day + ', ' + fmt(dateFor(n)) + ': ' + s.spot;
+        when.textContent = s.hours;
+      }
+    }
+    if (todayIdx === 6) {
+      document.getElementById('closed-bar').classList.add('is-today');
+      where.textContent = 'Closed today. Check back soon for next week’s stops.';
+      when.textContent = '';
+    } else if (todayIdx === -1) {
+      if (today < monday) {
+        showNext('', 0);
+      } else {
+        where.textContent = 'Check back soon for this week’s stops.';
+        when.textContent = '';
+      }
+    } else if (SCHEDULE[todayIdx].closed) {
+      showNext('Closed today. ', todayIdx + 1);
+    } else {
+      var t = SCHEDULE[todayIdx];
+      where.textContent = t.day + ': ' + t.spot;
+      when.textContent = t.hours;
+    }
+  })();
+</script>
+
+
+</body></html>
