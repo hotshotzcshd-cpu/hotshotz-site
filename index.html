@@ -387,6 +387,48 @@
   }
   button.shot.folder .folder-icon { font-size: 2.2rem; line-height: 1; opacity: 0.6; }
 
+  /* Slideshow tiles (replace folder icons) */
+  button.shot.folder.slideshow {
+    position: relative;
+    overflow: hidden;
+    justify-content: flex-end;
+    padding: 0;
+    gap: 0;
+    background: var(--navy);
+  }
+  button.shot.folder.slideshow .slides { position: absolute; inset: 0; }
+  button.shot.folder.slideshow .slides img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 1.2s ease, transform 5s ease;
+  }
+  button.shot.folder.slideshow .slides img.is-on { opacity: 1; transform: scale(1); }
+  button.shot.folder.slideshow .cap-banner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+    padding: 10px 8px;
+  }
+  button.shot.folder.slideshow .count { opacity: 0.7; font-weight: 600; }
+  button.shot.folder.slideshow:hover .cap-banner,
+  button.shot.folder.slideshow:focus-visible .cap-banner { background: var(--ink); }
+  @media (prefers-reduced-motion: reduce) {
+    button.shot.folder.slideshow .slides img { transition: opacity 0.4s ease; transform: none; }
+  }
+
   /* GALLERY MODALS */
   .gallery-modal-overlay {
     position: fixed;
@@ -920,17 +962,17 @@
 <section id="gallery" class="wrap">
   <p class="eyebrow">Gallery</p>
   <div class="gallery-grid">
-    <button type="button" class="shot folder" onclick="openGalleryModal('stand')">
-      <span class="folder-icon">&#128193;</span>
-      <span class="cap">The Stand</span>
+    <button type="button" class="shot folder slideshow" data-album="stand" onclick="openGalleryModal('stand')" aria-label="Open The Stand photos">
+      <span class="slides" aria-hidden="true"></span>
+      <span class="cap-banner">The Stand <span class="count"></span></span>
     </button>
-    <button type="button" class="shot folder" onclick="openGalleryModal('crew')">
-      <span class="folder-icon">&#128193;</span>
-      <span class="cap">The Crew</span>
+    <button type="button" class="shot folder slideshow" data-album="crew" onclick="openGalleryModal('crew')" aria-label="Open The Crew photos">
+      <span class="slides" aria-hidden="true"></span>
+      <span class="cap-banner">The Crew <span class="count"></span></span>
     </button>
-    <button type="button" class="shot folder" onclick="openGalleryModal('weekend')">
-      <span class="folder-icon">&#128193;</span>
-      <span class="cap">Weekend Rush</span>
+    <button type="button" class="shot folder slideshow" data-album="weekend" onclick="openGalleryModal('weekend')" aria-label="Open Weekend Rush photos">
+      <span class="slides" aria-hidden="true"></span>
+      <span class="cap-banner">Weekend Rush <span class="count"></span></span>
     </button>
   </div>
 </section>
@@ -1084,6 +1126,39 @@
       });
     }
   });
+
+  /* Gallery tile slideshows: each tile cycles through the photos in its album */
+  (function () {
+    var tiles = document.querySelectorAll('button.shot.slideshow');
+    var INTERVAL = 3500;
+    tiles.forEach(function (tile, t) {
+      var name = tile.getAttribute('data-album');
+      var srcImgs = document.querySelectorAll('#gallery-modal-' + name + ' .gallery-modal-grid img');
+      var box = tile.querySelector('.slides');
+      var count = tile.querySelector('.count');
+      if (count) count.textContent = '· ' + srcImgs.length + (srcImgs.length === 1 ? ' photo' : ' photos');
+      var slides = [];
+      srcImgs.forEach(function (src, i) {
+        var img = document.createElement('img');
+        img.src = src.getAttribute('src');
+        img.alt = '';
+        if (i > 0) img.loading = 'lazy';
+        if (i === 0) img.className = 'is-on';
+        box.appendChild(img);
+        slides.push(img);
+      });
+      if (slides.length < 2) return;
+      var cur = 0;
+      setTimeout(function () {
+        setInterval(function () {
+          if (document.hidden) return;
+          slides[cur].classList.remove('is-on');
+          cur = (cur + 1) % slides.length;
+          slides[cur].classList.add('is-on');
+        }, INTERVAL);
+      }, t * 1100); /* stagger so tiles don't all change at once */
+    });
+  })();
 
   function closeAllModals() {
     closeMenuModal();
