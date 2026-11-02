@@ -659,6 +659,9 @@
     color: var(--red);
   }
   .day-card .note { font-size: 0.8rem; color: var(--ink); opacity: 0.7; font-style: italic; }
+  .day-card .stop { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .day-card .stop + .stop { margin-top: 10px; padding-top: 12px; border-top: 2px solid var(--ink); }
+  .day-card .stop-logo { height: 34px; width: auto; max-width: 110px; object-fit: contain; align-self: flex-start; border-radius: 2px; }
 
   .day-card.is-today { box-shadow: 4px 4px 0 var(--ink); }
   .day-card.is-today .day-top { background: var(--yellow); color: var(--ink); border-bottom: 1.5px solid var(--ink); }
@@ -1169,15 +1172,36 @@
   });
 
   /* ===== WEEKLY SCHEDULE — edit the spots here ===== */
-  var WEEK_OF = '2026-11-02'; // Monday of the week this schedule covers (YYYY-MM-DD)
-  var SCHEDULE = [
-    { day: 'Monday',    spot: 'Closed', address: '', hours: '', note: '', closed: true },
-    { day: 'Tuesday',   spot: 'Closed', address: '', hours: '', note: '', closed: true },
-    { day: 'Wednesday', spot: 'Closed', address: '', hours: '', note: '', closed: true },
-    { day: 'Thursday',  spot: 'GRAND OPENING! Lancer Pool – Desert Oasis (NoJo)', address: '17525 W Redbird Rd, AZ', hours: '6:00 PM – 8:00 PM', note: 'Come celebrate our first day!' },
-    { day: 'Friday',    spot: 'Corner of Patton Rd & Grand Ave', address: 'Patton Rd & Grand Ave, AZ', hours: '11:00 AM – 5:00 PM', note: '' },
-    { day: 'Saturday',  spot: 'Closed', address: '', hours: '', note: '', closed: true }
-  ];
+  // Default hours: 10:00 AM – 4:00 PM. A day can list more than one stop (e.g. Lowe's + an event):
+  //   { day: 'Tuesday', stops: [ LOWES('10:00 AM – 3:00 PM'), { spot: 'Event name', address: '...', hours: '4:00 PM – 7:00 PM', note: '' } ] }
+  var LOWES = function (hours) {
+    return { spot: "Lowe's of Surprise", address: '13363 W Grand Ave, Surprise, AZ', hours: hours || '10:00 AM – 4:00 PM', note: '', logo: 'images/lowes-logo.png', logoAlt: "Lowe's" };
+  };
+  // One entry per approved week, keyed by that week's Monday (YYYY-MM-DD).
+  // The site shows the week that is current (from Sunday on, it shows the coming week if it's been added).
+  var WEEKS = {
+    '2026-11-02': [
+      { day: 'Monday',    closed: true },
+      { day: 'Tuesday',   closed: true },
+      { day: 'Wednesday', closed: true },
+      { day: 'Thursday',  stops: [ { spot: 'GRAND OPENING! Lancer Pool – Desert Oasis (NoJo)', address: '17525 W Redbird Rd, AZ', hours: '6:00 PM – 8:00 PM', note: 'Come celebrate our first day!' } ] },
+      { day: 'Friday',    stops: [ { spot: 'Corner of Patton Rd & Grand Ave', address: 'Patton Rd & Grand Ave, AZ', hours: '10:00 AM – 4:00 PM', note: '' } ] },
+      { day: 'Saturday',  closed: true }
+    ]
+  };
+  var WEEK_OF = (function () {
+    var t = new Date(); t = new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1); // tomorrow, so Sunday rolls to the coming week
+    var keys = Object.keys(WEEKS).sort(), pick = keys[0];
+    keys.forEach(function (k) { var p = k.split('-'); if (new Date(+p[0], +p[1] - 1, +p[2]) <= t) pick = k; });
+    return pick;
+  })();
+  var SCHEDULE = WEEKS[WEEK_OF];
+  SCHEDULE.forEach(function (s) {
+    if (!s.stops) s.stops = s.closed ? [] : [{ spot: s.spot, address: s.address, hours: s.hours, note: s.note, logo: s.logo, logoAlt: s.logoAlt }];
+    if (!s.stops.length) s.closed = true;
+    s.spot = s.stops.map(function (t) { return t.spot; }).join(' + ');
+    s.hours = s.stops.map(function (t) { return t.hours; }).join(' · ');
+  });
 
   (function renderSchedule() {
     function esc(s) {
@@ -1200,18 +1224,24 @@
     var grid = document.getElementById('sched-grid');
     grid.innerHTML = SCHEDULE.map(function (s, i) {
       var isToday = i === todayIdx;
-      var addr = s.address
-        ? '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(s.address) + '" target="_blank" rel="noopener noreferrer">' + esc(s.address) + '</a>'
-        : (s.closed ? '' : 'Address coming soon');
+      var body = s.closed
+        ? '<div class="stop"><span class="loc">Closed</span></div>'
+        : s.stops.map(function (t) {
+            var addr = t.address
+              ? '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(t.address) + '" target="_blank" rel="noopener noreferrer">' + esc(t.address) + '</a>'
+              : 'Address coming soon';
+            return '<div class="stop">' +
+              (t.logo ? '<img class="stop-logo" src="' + esc(t.logo) + '" alt="' + esc(t.logoAlt || t.spot) + '" loading="lazy">' : '') +
+              '<span class="loc">' + esc(t.spot) + '</span>' +
+              '<span class="addr">' + addr + '</span>' +
+              (t.note ? '<span class="note">' + esc(t.note) + '</span>' : '') +
+              '<span class="hours">' + esc(t.hours) + '</span>' +
+            '</div>';
+          }).join('');
       return '<article class="day-card' + (isToday ? ' is-today' : '') + '">' +
         (isToday ? '<span class="today-stamp">Today</span>' : '') +
         '<div class="day-top"><span class="day-name">' + esc(s.day.slice(0, 3)) + '</span><span class="day-date mono">' + fmt(dateFor(i)) + '</span></div>' +
-        '<div class="day-body">' +
-          '<span class="loc">' + esc(s.spot) + '</span>' +
-          '<span class="addr">' + addr + '</span>' +
-          (s.note ? '<span class="note">' + esc(s.note) + '</span>' : '') +
-          '<span class="hours">' + esc(s.hours) + '</span>' +
-        '</div></article>';
+        '<div class="day-body">' + body + '</div></article>';
     }).join('');
 
     var where = document.getElementById('today-where');
