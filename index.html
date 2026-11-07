@@ -1271,6 +1271,14 @@
       { day: 'Thursday',  stops: [ LOWES() ] },
       { day: 'Friday',    stops: [ LOWES() ] },
       { day: 'Saturday',  stops: [ LOWES() ] }
+    ],
+    '2026-11-23': [
+      { day: 'Monday',    stops: [ LOWES() ] },
+      { day: 'Tuesday',   stops: [ LOWES() ] },
+      { day: 'Wednesday', stops: [ LOWES() ] },
+      { day: 'Thursday',  closed: true },
+      { day: 'Friday',    stops: [ (function () { var s = LOWES('5:00 AM – 3:00 PM'); s.spot = "BLACK FRIDAY SPECIAL OPS – Lowe's of Surprise"; s.note = 'Mission: Hot Dogs! Early hours for Black Friday.'; return s; })() ] },
+      { day: 'Saturday',  stops: [ LOWES() ] }
     ]
   };
   var WEEK_OF = (function () {
