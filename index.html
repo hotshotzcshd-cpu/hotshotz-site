@@ -429,6 +429,94 @@
     button.shot.folder.slideshow .slides img { transition: opacity 0.4s ease; transform: none; }
   }
 
+
+  /* YELP REVIEWS */
+  .reviews-head {
+    margin-top: 22px;
+    border: 1.5px solid var(--ink);
+    border-radius: 6px;
+    background: var(--navy);
+    color: #fff;
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px 24px;
+    flex-wrap: wrap;
+  }
+  .reviews-score { display: flex; align-items: center; gap: 16px; }
+  .reviews-score .big { font-size: 3rem; font-weight: 700; line-height: 1; color: var(--yellow); }
+  .reviews-score .meta { display: flex; flex-direction: column; gap: 6px; }
+  .reviews-score .meta span { font-size: 0.9rem; opacity: 0.9; }
+  .stars { display: inline-flex; gap: 3px; }
+  .stars i {
+    width: 22px; height: 22px; border-radius: 3px; background: var(--red);
+    display: inline-grid; place-items: center; font-style: normal; color: #fff; font-size: 14px; line-height: 1;
+  }
+  .stars.sm i { width: 17px; height: 17px; font-size: 11px; }
+  .stars i.off { background: #c9c5ba; }
+  .reviews-head .cta-row { gap: 10px; }
+  .reviews-head .btn.ghost { color: #fff; border-color: #fff; }
+  .review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .review-card {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .review-card .rc-body { padding: 18px 18px 16px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .review-card .rc-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .review-card .rc-date { font-size: 0.78rem; color: var(--muted); }
+  .review-card blockquote { margin: 0; font-size: 0.95rem; line-height: 1.55; color: var(--ink); }
+  .review-card .cap-banner {
+    background: var(--navy); color: #fff; font-size: 0.78rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em; text-align: center; padding: 10px 8px;
+  }
+  .review-card .cap-banner span { opacity: 0.7; font-weight: 600; }
+
+  .review-show {
+    margin-top: 14px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .rs-track { display: grid; }
+  .review-show .review-slide {
+    grid-area: 1 / 1;
+    border: 0; border-radius: 0; background: transparent;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.9s ease, visibility 0.9s;
+  }
+  .review-show .review-slide.is-on { opacity: 1; visibility: visible; }
+  .review-show .review-slide .rc-body { padding: 26px 26px 22px; justify-content: center; min-height: 170px; }
+  .review-show .review-slide blockquote { font-size: 1.08rem; }
+  .rs-controls { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 12px 0 4px; }
+  .rs-arrow {
+    all: unset; cursor: pointer; width: 34px; height: 34px; border-radius: 50%;
+    border: 1.5px solid var(--ink); display: grid; place-items: center; font-size: 1.4rem; line-height: 1;
+  }
+  .rs-arrow:hover, .rs-arrow:focus-visible { background: var(--yellow); }
+  .rs-dots { display: flex; gap: 8px; }
+  .rs-dots button { all: unset; cursor: pointer; width: 9px; height: 9px; border-radius: 50%; background: #c9c5ba; }
+  .rs-dots button.is-on { background: var(--red); }
+  .rs-all {
+    all: unset; cursor: pointer; display: block; box-sizing: border-box; width: 100%; margin-top: 12px;
+    background: var(--navy); color: #fff; text-align: center; padding: 11px 8px;
+    font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .rs-all:hover, .rs-all:focus-visible { background: var(--ink); }
+  .rs-all .rs-count { opacity: 0.7; font-weight: 600; }
+  #gallery-modal-reviews .review-grid { margin-top: 18px; }
+  .reviews-foot { margin-top: 16px; font-size: 0.85rem; }
+
   /* GALLERY MODALS */
   .gallery-modal-overlay {
     position: fixed;
@@ -722,6 +810,7 @@
         <li><a href="#loki">Our Story</a></li>
         <li><a href="#find-us">Find the Stand</a></li>
         <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#reviews">Reviews</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -980,6 +1069,101 @@
   </div>
 </section>
 
+<section id="reviews" class="wrap">
+  <p class="eyebrow">Reviews</p>
+  <h2>What the crowd is saying.</h2>
+  <div class="reviews-head">
+    <div class="reviews-score">
+      <span class="big">5.0</span>
+      <div class="meta">
+        <span class="stars" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span>
+        <span>Based on 4 reviews on Yelp</span>
+      </div>
+    </div>
+    <div class="cta-row">
+      <a class="btn primary" href="https://biz.yelp.com/r2r/X113FIuh4pgCjfMfCyxb4g" target="_blank" rel="noopener noreferrer">Leave Us a Review</a>
+      <a class="btn ghost" href="https://www.yelp.com/biz/hot-shotz-surprise" target="_blank" rel="noopener noreferrer">See All on Yelp</a>
+    </div>
+  </div>
+  <div class="review-show" id="review-show" aria-roledescription="carousel" aria-label="Yelp reviews">
+    <div class="rs-track">
+    <article class="review-card review-slide is-on">
+      <div class="rc-body">
+        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 12, 2026</span></div>
+        <blockquote>This new business is worth the visit! This stand has the best hot dogs and great variety. The owner is friendly and a true Chicagoan! I can&#x27;t wait to go back.</blockquote>
+      </div>
+      <div class="cap-banner">Jana S. <span>· Prescott, AZ</span></div>
+    </article>
+    <article class="review-card review-slide">
+      <div class="rc-body">
+        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 12, 2026</span></div>
+        <blockquote>Good service and amazing food<br>The owner is great dud and amazing to talk to,the one of the best hot dog stand we had</blockquote>
+      </div>
+      <div class="cap-banner">James G. <span>· Surprise, AZ</span></div>
+    </article>
+    <article class="review-card review-slide">
+      <div class="rc-body">
+        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 12, 2026</span></div>
+        <blockquote>Best chicago dog in the valley. If you want the snap. You will find it here. Friendly chef who will welcome you like family.</blockquote>
+      </div>
+      <div class="cap-banner">John S. <span>· El Mirage, AZ</span></div>
+    </article>
+    <article class="review-card review-slide">
+      <div class="rc-body">
+        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 5, 2026</span></div>
+        <blockquote>Got the Chicago-style dog with hot peppers, and it hit the spot! Loved the extra kick. If you&#x27;re craving a taste of Chicago here in Arizona, check out Hot Shotz!</blockquote>
+      </div>
+      <div class="cap-banner">Brad T. <span>· Sun City, AZ</span></div>
+    </article>
+    </div>
+    <div class="rs-controls">
+      <button type="button" class="rs-arrow" data-dir="-1" aria-label="Previous review">&#8249;</button>
+      <div class="rs-dots"></div>
+      <button type="button" class="rs-arrow" data-dir="1" aria-label="Next review">&#8250;</button>
+    </div>
+    <button type="button" class="rs-all" onclick="openGalleryModal('reviews')">Read all reviews <span class="rs-count"></span></button>
+  </div>
+  <p class="reviews-foot">Reviews from Yelp, shown as written. Had a dog with us? We'd love to hear about it.</p>
+</section>
+
+<div class="gallery-modal-overlay" id="gallery-modal-reviews">
+  <div class="gallery-modal-inner">
+    <button type="button" class="gallery-modal-close" onclick="closeGalleryModal('reviews')" aria-label="Close">&times;</button>
+    <h3>Yelp Reviews</h3>
+    <div class="review-grid">
+      <article class="review-card">
+      <div class="rc-body">
+        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 12, 2026</span></div>
+        <blockquote>This new business is worth the visit! This stand has the best hot dogs and great variety. The owner is friendly and a true Chicagoan! I can&#x27;t wait to go back.</blockquote>
+      </div>
+      <div class="cap-banner">Jana S. <span>· Prescott, AZ</span></div>
+    </article>
+      <article class="review-card">
+      <div class="rc-body">
+        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 12, 2026</span></div>
+        <blockquote>Good service and amazing food<br>The owner is great dud and amazing to talk to,the one of the best hot dog stand we had</blockquote>
+      </div>
+      <div class="cap-banner">James G. <span>· Surprise, AZ</span></div>
+    </article>
+      <article class="review-card">
+      <div class="rc-body">
+        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 12, 2026</span></div>
+        <blockquote>Best chicago dog in the valley. If you want the snap. You will find it here. Friendly chef who will welcome you like family.</blockquote>
+      </div>
+      <div class="cap-banner">John S. <span>· El Mirage, AZ</span></div>
+    </article>
+      <article class="review-card">
+      <div class="rc-body">
+        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 5, 2026</span></div>
+        <blockquote>Got the Chicago-style dog with hot peppers, and it hit the spot! Loved the extra kick. If you&#x27;re craving a taste of Chicago here in Arizona, check out Hot Shotz!</blockquote>
+      </div>
+      <div class="cap-banner">Brad T. <span>· Sun City, AZ</span></div>
+    </article>
+  </div>
+    <div class="cta-row" style="margin-top:20px"><a class="btn primary" href="https://biz.yelp.com/r2r/X113FIuh4pgCjfMfCyxb4g" target="_blank" rel="noopener noreferrer">Leave Us a Review</a></div>
+  </div>
+</div>
+
 <div class="gallery-modal-overlay" id="gallery-modal-stand">
   <div class="gallery-modal-inner">
     <button type="button" class="gallery-modal-close" onclick="closeGalleryModal('stand')" aria-label="Close">&times;</button>
@@ -1197,7 +1381,7 @@
       document.body.style.overflow = '';
     }
   }
-  ['stand', 'crew', 'weekend'].forEach(function (name) {
+  ['stand', 'crew', 'weekend', 'reviews'].forEach(function (name) {
     var el = document.getElementById('gallery-modal-' + name);
     if (el) {
       el.addEventListener('click', function (e) {
@@ -1205,6 +1389,42 @@
       });
     }
   });
+
+
+  /* Yelp review slideshow */
+  (function () {
+    var root = document.getElementById('review-show');
+    if (!root) return;
+    var slides = root.querySelectorAll('.review-slide');
+    var dotsBox = root.querySelector('.rs-dots');
+    var count = root.querySelector('.rs-count');
+    if (count) count.textContent = '\u00b7 ' + slides.length;
+    var cur = 0, timer = null, INTERVAL = 6000;
+    var dots = Array.prototype.map.call(slides, function (_, i) {
+      var d = document.createElement('button');
+      d.type = 'button';
+      d.setAttribute('aria-label', 'Show review ' + (i + 1));
+      d.addEventListener('click', function () { go(i); restart(); });
+      dotsBox.appendChild(d);
+      return d;
+    });
+    function go(i) {
+      slides[cur].classList.remove('is-on'); dots[cur].classList.remove('is-on');
+      cur = (i + slides.length) % slides.length;
+      slides[cur].classList.add('is-on'); dots[cur].classList.add('is-on');
+    }
+    function restart() {
+      if (timer) clearInterval(timer);
+      if (slides.length > 1) timer = setInterval(function () { go(cur + 1); }, INTERVAL);
+    }
+    root.querySelectorAll('.rs-arrow').forEach(function (b) {
+      b.addEventListener('click', function () { go(cur + (+b.getAttribute('data-dir'))); restart(); });
+    });
+    root.addEventListener('mouseenter', function () { if (timer) clearInterval(timer); });
+    root.addEventListener('mouseleave', restart);
+    dots[0].classList.add('is-on');
+    restart();
+  })();
 
   /* Gallery tile slideshows: each tile cycles through the photos in its album */
   (function () {
@@ -1241,7 +1461,7 @@
 
   function closeAllModals() {
     closeMenuModal();
-    ['stand', 'crew', 'weekend'].forEach(closeGalleryModal);
+    ['stand', 'crew', 'weekend', 'reviews'].forEach(closeGalleryModal);
   }
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeAllModals();
