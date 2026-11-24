@@ -1,0 +1,44 @@
+# Media files already handled for the website gallery (path under OneDrive "Hotshots, LLC/Media").
+# Weekly gallery task: a file in The stand / The crew / The weekend rush / Videos that is NOT listed here is new.
+# Videos are listed only after Ryan decides what to do with them (the decision is noted after " | ").
+The stand/20261027_031121326_iOS.jpg
+The stand/20261027_031129200_iOS.jpg
+The stand/20261027_031139910_iOS.jpg
+The stand/20261031_232618207_iOS.jpg
+The stand/20261031_232630452_iOS.jpg
+The stand/20261031_232650384_iOS.jpg
+The stand/20261031_232718626_iOS.jpg
+The stand/20261031_232738130_iOS.jpg
+The stand/20261106_003030760_iOS.jpg
+The stand/20261106_003036152_iOS.jpg
+The stand/20261106_003102199_iOS.jpg
+The stand/20261106_003118675_iOS.jpg
+The stand/20261114_190919144_iOS.jpg
+The stand/20261114_190941401_iOS.jpg
+The stand/20261121_003956516_iOS.jpg
+The stand/20261122_002744396_iOS.jpg
+The stand/20261122_004916219_iOS.jpg
+The crew/20261031_232600411_iOS.jpg
+The crew/20261106_003046490_iOS.jpg
+The crew/20261106_003053805_iOS.jpg
+The crew/20261106_003313227_iOS.jpg
+The crew/20261106_003319698_iOS.jpg
+The crew/20261106_003444463_iOS.jpg
+The crew/20261106_003511411_iOS.jpg
+The crew/20261106_004115958_iOS.jpg
+The crew/20261106_005252188_iOS.jpg
+The crew/20261106_010606000_iOS.jpg
+The crew/20261111_222406023_iOS.jpg
+The weekend rush/20261031_234328946_iOS.jpg
+The weekend rush/20261031_234337430_iOS.jpg
+The weekend rush/20261106_005955085_iOS.jpg
+The weekend rush/20261106_011034741_iOS.jpg
+The weekend rush/20261106_011038284_iOS.jpg
+The weekend rush/20261106_011747762_iOS.jpg
+The weekend rush/20261106_013752830_iOS.jpg
+The weekend rush/20261106_021759754_iOS.jpg
+The weekend rush/20261114_200403272_iOS.jpg
+The weekend rush/20261121_172549970_iOS.jpg
+The weekend rush/20261121_173136867_iOS.jpg
+Videos/20261106_002731000_iOS.MOV | grand opening video, used for social (videos/2026-11-grand-opening.mp4)
+Videos/20261110_163624000_iOS.MOV | Lowe's announcement video, used for social (videos/lowes-now-open-2026-11-10.mp4)
