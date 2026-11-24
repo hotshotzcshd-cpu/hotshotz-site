@@ -810,7 +810,7 @@
         <li><a href="#loki">Our Story</a></li>
         <li><a href="#find-us">Find the Stand</a></li>
         <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#reviews">Reviews</a></li>
+        <li hidden><a href="#reviews">Reviews</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -1069,7 +1069,7 @@
   </div>
 </section>
 
-<section id="reviews" class="wrap">
+<section id="reviews" class="wrap" hidden>
   <p class="eyebrow">Reviews</p>
   <h2>What the crowd is saying.</h2>
   <div class="reviews-head">
@@ -1077,7 +1077,7 @@
       <span class="big">5.0</span>
       <div class="meta">
         <span class="stars" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span>
-        <span>Based on 1 review on Yelp</span>
+        <span>Based on 0 reviews on Yelp</span>
       </div>
     </div>
     <div class="cta-row">
@@ -1087,13 +1087,6 @@
   </div>
   <div class="review-show" id="review-show" aria-roledescription="carousel" aria-label="Yelp reviews">
     <div class="rs-track">
-    <article class="review-card review-slide is-on">
-      <div class="rc-body">
-        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 15, 2026</span></div>
-        <blockquote>We had to go show our friend Ryan some love and followed Hot Shotz out to their pop-up at Salutes and Tattoos at Vulture Peak Brewing! <br><br>We had the Nacho Dog and the Chicago Dog, and both were outstanding!! Seriously, so good and definitely worth the trip!<br><br>We love supporting our friends and seeing them do their thing, especially when the food is this good! Ryan, you knocked it out of the park!<br><br>If you&#x27;re local to Arizona, you can find his daily location on his website. Definitely worth stopping by and giving Hot Shotz a try! We can&#x27;t wait to go back and try more of the menu!</blockquote>
-      </div>
-      <div class="cap-banner">Dustin Coyle <span>· Central City, Phoenix, AZ</span></div>
-    </article>
     </div>
     <div class="rs-controls">
       <button type="button" class="rs-arrow" data-dir="-1" aria-label="Previous review">&#8249;</button>
@@ -1110,13 +1103,6 @@
     <button type="button" class="gallery-modal-close" onclick="closeGalleryModal('reviews')" aria-label="Close">&times;</button>
     <h3>Yelp Reviews</h3>
     <div class="review-grid">
-      <article class="review-card">
-      <div class="rc-body">
-        <div class="rc-top"><span class="stars sm" role="img" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span class="rc-date mono">Nov 15, 2026</span></div>
-        <blockquote>We had to go show our friend Ryan some love and followed Hot Shotz out to their pop-up at Salutes and Tattoos at Vulture Peak Brewing! <br><br>We had the Nacho Dog and the Chicago Dog, and both were outstanding!! Seriously, so good and definitely worth the trip!<br><br>We love supporting our friends and seeing them do their thing, especially when the food is this good! Ryan, you knocked it out of the park!<br><br>If you&#x27;re local to Arizona, you can find his daily location on his website. Definitely worth stopping by and giving Hot Shotz a try! We can&#x27;t wait to go back and try more of the menu!</blockquote>
-      </div>
-      <div class="cap-banner">Dustin Coyle <span>· Central City, Phoenix, AZ</span></div>
-    </article>
   </div>
     <div class="cta-row" style="margin-top:20px"><a class="btn primary" href="https://biz.yelp.com/r2r/X113FIuh4pgCjfMfCyxb4g" target="_blank" rel="noopener noreferrer">Leave Us a Review</a></div>
   </div>
@@ -1354,6 +1340,7 @@
     var root = document.getElementById('review-show');
     if (!root) return;
     var slides = root.querySelectorAll('.review-slide');
+    if (!slides.length) return;
     var dotsBox = root.querySelector('.rs-dots');
     var count = root.querySelector('.rs-count');
     if (count) count.textContent = '\u00b7 ' + slides.length;
